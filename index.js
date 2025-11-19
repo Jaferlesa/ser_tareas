@@ -72,39 +72,58 @@ app.post('/agrega_todo', jsonParser, function (req, res) {
     });
 });
 
-app.get('/todos/:id', (req, res) => {
-    
-    //Obtenemos el ID desde req.params (parámetros de ruta
-    const { id } = req.params;
+// Endpoint GET para obtener la lista de tareas
+app.get('/todos', (req, res) => {
+    // Consulta SQL para seleccionar todo
+    const sql = "SELECT * FROM todos";
 
-    //Preparamos la consulta SQL
-    const sql = "SELECT * FROM todos WHERE id = ?";
-
-    //Usamos db.get() porque solo esperamos UNA fila
-    //El callback nos da (err, row), donde 'row' es un objeto
-    db.get(sql, [id], (err, row) => {
+    db.all(sql, [], (err, rows) => {
         if (err) {
-            console.error("Error al consultar la base de datos:", err.message);
-            res.status(500).json({ error: 'Error interno del servidor.' });
+            // Si hay error en la base de datos
+            res.status(500).json({ error: err.message });
             return;
         }
-
-        //Manejamos el caso donde no se encuentra una tarea con ese ID
-        if (!row) {
-            res.status(404).json({ error: 'Tarea no encontrada.' });
-            return;
-        }
-
-        //Si se encuentra, devolvemos 200 OK y la tarea encontrada
-        res.status(200).json({
-            message: 'Tarea obtenida con éxito',
-            data: row
+        // Si todo sale bien, enviamos las filas (rows) en un JSON
+        res.json({
+            data: rows
         });
     });
 });
 
+// app.get('/todos/:id', (req, res) => {
+    
+//     //Obtenemos el ID desde req.params (parámetros de ruta
+//     const { id } = req.params;
+
+//     //Preparamos la consulta SQL
+//     const sql = "SELECT * FROM todos WHERE id = ?";
+
+//     //Usamos db.get() porque solo esperamos UNA fila
+//     //El callback nos da (err, row), donde 'row' es un objeto
+//     db.get(sql, [id], (err, row) => {
+//         if (err) {
+//             console.error("Error al consultar la base de datos:", err.message);
+//             res.status(500).json({ error: 'Error interno del servidor.' });
+//             return;
+//         }
+
+//         //Manejamos el caso donde no se encuentra una tarea con ese ID
+//         if (!row) {
+//             res.status(404).json({ error: 'Tarea no encontrada.' });
+//             return;
+//         }
+
+//         //Si se encuentra, devolvemos 200 OK y la tarea encontrada
+//         res.status(200).json({
+//             message: 'Tarea obtenida con éxito',
+//             data: row
+//         });
+//     });
+// });
+
 
 // Ponemos el servidor a escuchar en el puerto 3000
+
 const port = 3000;
 app.listen(port, () => {
     console.log(`Aplicación corriendo en http://localhost:${port}`);

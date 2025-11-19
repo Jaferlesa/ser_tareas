@@ -1,21 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert, Pressable, Text, FlatList } from 'react-native';
 
 // REEMPLAZA ESTA URL CON LA DEL TUNEL
-const SERVER_URL = 'https://easy-eyes-grow.loca.lt/';
+const SERVER_URL = 'https://ninety-geese-hide.loca.lt/';
 
-const DATOS_SIMULADOS = [
-  { id: '1', todo: 'Verificar resultados' },
-  { id: '2', todo: 'Enviar datos' },
-  { id: '3', todo: 'Enviar solicitud de area' },
-  { id: '4', todo: 'Terminar el reporte' },
-  { id: '5', todo: 'Solicitar material' },
-  { id: '6', todo: 'Ajustar horarios'}
-];
+// const DATOS_SIMULADOS = [
+//   { id: '1', todo: 'Verificar resultados' },
+//   { id: '2', todo: 'Enviar datos' },
+//   { id: '3', todo: 'Enviar solicitud de area' },
+//   { id: '4', todo: 'Terminar el reporte' },
+//   { id: '5', todo: 'Solicitar material' },
+//   { id: '6', todo: 'Ajustar horarios'}
+// ];
 
 const App = () => {
   // Estado para guardar el texto del input
   const [todo, setTodo] = useState('');
+  const [tareas, setTareas] = useState([]);
+
+  // Funcion para obtener las tareas
+  const obtenerTareas = async () => {
+    try {
+      const respuesta = await fetch(`${SERVER_URL}todos`);
+      if (respuesta.status == 200){
+        const jsonRespuesta = await respuesta.json();
+        setTareas(jsonRespuesta.data);
+      } else { 
+        Alert.alert("Error", `Código: ${respuesta.status}`);
+      }
+    }catch (error) {
+      console.error(error);
+      Alert.alert("Error", "No se puede conectar al servidor");
+    }
+  };
+
+  // Carga la lista al iniciar la app
+  useEffect(() => {
+    obtenerTareas();
+  }, []);
 
   // Función que llama al servidor con la dirección del túnel
   const agregarTodo = async () => {
@@ -45,6 +67,7 @@ const App = () => {
           `Tarea agregada correctamente con el ID: ${jsonRespuesta.id}`
         );
         setTodo(''); // Limpiamos el campo de texto después del envío
+        await obtenerTareas(); // Volver a mostrar lista de tareas actualizada
       } else {
         // Si el estado no es 201, mostramos un error
         const errorTexto = await respuesta.text();
@@ -71,7 +94,7 @@ const App = () => {
       <View style={styles.flatContainer}>
         <Text style={styles.listTitle}>Lista de Tareas (Simuladas)</Text>
         <FlatList
-          data={DATOS_SIMULADOS}
+          data={tareas}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
