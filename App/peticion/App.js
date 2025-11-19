@@ -94,7 +94,7 @@ const App = () => {
 
       {/*  FlatList con datos */}
       <View style={styles.flatContainer}>
-        <Text style={styles.listTitle}>Lista de Tareas (Simuladas)</Text>
+        <Text style={styles.listTitle}>Lista de Tareas</Text>
         <FlatList
           data={tareas}
           renderItem={renderItem}
