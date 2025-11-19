@@ -127,5 +127,5 @@ app.get('/todos', (req, res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`Aplicación corriendo en http://localhost:${port}`);
+    console.log(`Aplicación corriendo en: ${port}`);
 });

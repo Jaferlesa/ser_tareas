@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert, Pressable, Text, FlatList } from 'react-native';
 
 // REEMPLAZA ESTA URL CON LA DEL TUNEL
-const SERVER_URL = 'https://ninety-geese-hide.loca.lt/';
+const SERVER_URL = 'https://jafer-tareas-api.onrender.com/';
 
 // const DATOS_SIMULADOS = [
 //   { id: '1', todo: 'Verificar resultados' },
