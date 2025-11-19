@@ -69,7 +69,7 @@ const App = () => {
         setTodo(''); // Limpiamos el campo de texto después del envío
         
         await obtenerTareas(); // Volver a mostrar lista de tareas actualizada
-        
+
       } else {
         // Si el estado no es 201, mostramos un error
         const errorTexto = await respuesta.text();
@@ -92,7 +92,7 @@ const App = () => {
   return (
     <View style={styles.container}>
 
-      {/*  FlatList con datos simulados  */}
+      {/*  FlatList con datos */}
       <View style={styles.flatContainer}>
         <Text style={styles.listTitle}>Lista de Tareas (Simuladas)</Text>
         <FlatList
