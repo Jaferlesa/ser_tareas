@@ -67,7 +67,9 @@ const App = () => {
           `Tarea agregada correctamente con el ID: ${jsonRespuesta.id}`
         );
         setTodo(''); // Limpiamos el campo de texto después del envío
+        
         await obtenerTareas(); // Volver a mostrar lista de tareas actualizada
+        
       } else {
         // Si el estado no es 201, mostramos un error
         const errorTexto = await respuesta.text();

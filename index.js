@@ -90,6 +90,7 @@ app.get('/todos', (req, res) => {
     });
 });
 
+// Endpoint para usar con postman
 // app.get('/todos/:id', (req, res) => {
     
 //     //Obtenemos el ID desde req.params (parámetros de ruta
